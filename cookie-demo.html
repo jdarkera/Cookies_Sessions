@@ -4,6 +4,10 @@
 <script>
 function setCookie(cname,cvalue,exdays) {
   var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires=" + d.toGTMString();
+  document.cookie = cname +"=" + cvalue + ";" + expires + ";path=/";
+  
   //write code here
 }
 
@@ -11,6 +15,16 @@ function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
   var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++){
+    var c = ca[i];
+    while (c.charAt(0)==''){
+      c = c.substring(1);
+    }
+    if (c.indexOf(name)== 0){
+      return c.substring(name.length, c.length);
+    }
+  }
+
   
   //write for loop here
 
@@ -19,6 +33,15 @@ function getCookie(cname) {
 
 function checkCookie() {
   var user=getCookie("username");
+  if (user != ""){
+    console.log("Welcome again" + user);
+    alert("welcome again"+ user);
+  } else {
+    user = prompt("Please enter your name:");
+    if (user != "" && user != null){
+      setCookie("username", user, 30); 
+    }
+  }
   
   //write if statement here
 
@@ -27,6 +50,6 @@ function checkCookie() {
 </script>
 </head>
 
-<body onload=""></body>
+<body onload="checkCookie()"></body>
 
 </html>
